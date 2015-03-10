@@ -6,6 +6,6 @@
 TFTP_USERNAME="<%= node['tftp']['username'] %>"
 TFTP_DIRECTORY="<%= node['tftp']['directory'] %>"
 TFTP_ADDRESS="<%= node['tftp']['address'] %>"
-TFTP_OPTIONS="<%= node['tftp']['tftp_options'] %>"
+TFTP_OPTIONS="<%= node['tftp']['tftp_options'] %><%= @remap_option %>"
 RUN_DAEMON="yes"
-OPTIONS="<%= node['tftp']['options'] %>"
+OPTIONS="<%= node['tftp']['options'] %><%= @remap_option %>"

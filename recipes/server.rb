@@ -43,6 +43,20 @@ when "centos", "redhat", "scientific", "oracle", "amazon", "fedora"
     notifies :restart, "service[xinetd]"
   end
 
+  if !node["tftp"]["remap"].empty?
+    r = resources(template: '/etc/xinetd.d/tftp')
+    r.variables(
+      :remap_option => " -m /etc/tftpd-hpa.map"
+    )
+    template "/etc/tftpd.map" do
+      owner "root"
+      group "root"
+      mode 0644
+      source "tftp-map.erb"
+      notifies :reload, "service[tftpd-hpa]", :delayed
+    end
+  end
+
 when "debian", "ubuntu"
   package "tftpd-hpa"
 
@@ -66,6 +80,20 @@ when "debian", "ubuntu"
     mode 0644
     source "tftpd-hpa.erb"
     notifies :restart, "service[tftpd-hpa]"
+  end
+
+  if !node["tftp"]["remap"].empty?
+    r = resources(template: '/etc/default/tftpd-hpa')
+    r.variables(
+      :remap_option => " -m /etc/tftpd-hpa.map"
+    )
+    template "/etc/tftpd-hpa.map" do
+      owner "root"
+      group "root"
+      mode 0644
+      source "tftp-map.erb"
+      notifies :reload, "service[tftpd-hpa]", :delayed
+    end
   end
 else
   Chef::Log.warn("#{cookbook_name}::#{recipe_name} recipe is not supported on #{node['platform']}")

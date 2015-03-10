@@ -1,0 +1,13 @@
+<% if @node[:tftp][:remap].include?('backslashes') %>
+# replace backslashes (\) in the requested filename with forward-slashes (/) (for Windows clients)
+rg \\ /
+<% end %>
+<% if @node[:tftp][:remap].include?('lowercase') %>
+# replace any uppercase letters in the requested filename with the lowercase version instead (for Windows clients)
+rg ([A-Z]) \L\1
+<% end %>
+<% if @node[:tftp][:remap].include?('0xff-strip') %>
+# strip off any 0xFF chars at the end of the filename as workaround for a bug
+# in some old PXE stacks which include an extra byte in the filename
+rg (.*)<%= "\xff" %>$ \1
+<% end %>

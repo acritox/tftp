@@ -30,3 +30,8 @@ attribute "tftp/tftp_options",
 attribute "tftp/options",
   :display_name => "tftp options",
   :default => "-s"
+
+attribute "tftp/remap",
+  :display_name => "tftp remap",
+  :description => "Specify the use of filename remapping rules.",
+  :default => [ "backslashes", "lowercase", "0xff-strip" ]
